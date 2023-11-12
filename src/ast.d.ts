@@ -21,13 +21,10 @@ export function getDefaultExport(ast: any): any[];
  * import specifier would also need proper tranformation to be handled
  * for cases where the imports might be responsible for things
  * like JSX.
- * @param {string} name
- * @param {string} from
- * @param {object} options
- * @param {boolean} options.named
+ * @returns
  */
-export function addImportToAST(ast: any): (name: any, from: any, { named }: {
-    named: any;
+export function addImportToAST(ast: any): (name: string, from: string, { named }: {
+    named: boolean;
 }) => void;
 export function getNamedExport(ast: any, name: any): any;
 /**

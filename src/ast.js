@@ -135,12 +135,15 @@ function getDefaultExportName(ast) {
  * import specifier would also need proper tranformation to be handled
  * for cases where the imports might be responsible for things
  * like JSX.
- * @param {string} name
- * @param {string} from
- * @param {object} options
- * @param {boolean} options.named
+ * @returns
  */
 function addImportToAST(ast) {
+  /**
+   * @param {string} name
+   * @param {string} from
+   * @param {object} options
+   * @param {boolean} options.named
+   */
   return (name, from, { named }) => {
     for (let child of ast.body) {
       if (child.type !== 'ImportDeclaration') continue
