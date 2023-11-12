@@ -21,6 +21,7 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "next": "bumpp",
     "test": "uvu",
     "test:ci": "c8 npm run test"
   },
