@@ -1,6 +1,6 @@
 import { dirname, join } from 'node:path'
 import { nodeExternals } from 'rollup-plugin-node-externals'
-import fs from 'node:fs/promises'
+import fs, { mkdir } from 'node:fs/promises'
 
 /**
  * @return {import("rollup").RollupOptions[]}
@@ -87,6 +87,7 @@ function createPackages() {
       if (info.format == 'cjs') {
         pkg.type = 'commonjs'
       }
+      await mkdir(info.dir, { recursive: true })
       if (['esm', 'es'].includes(info.format)) {
         pkg.type = 'module'
       }
