@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./assets/header.png" width="100%">
+    <img width="1200" alt="header" src="https://github.com/dumbjs/preland/assets/43572006/49e9d708-4b88-4922-9094-7ad25d53906e">
 </p>
 
 > **Pre**act Is**land**
