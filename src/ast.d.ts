@@ -1,14 +1,14 @@
-export function walker(ast: any, visitors: any): void;
-export function astFromCode(code: any): import("acorn").Program;
-export function codeFromAST(ast: any): any;
+export function walker(ast: any, visitors: any): void
+export function astFromCode(code: any): import('acorn').Program
+export function codeFromAST(ast: any): any
 /**
  * Takes in an AST node and returns the name of the default
  * export for it
  * @param {*} ast
  * @returns
  */
-export function getDefaultExportName(ast: any): any;
-export function getDefaultExport(ast: any): any[];
+export function getDefaultExportName(ast: any): any
+export function getDefaultExport(ast: any): any[]
 /**
  * NOT A PURE FUNCTION!
  * modifies the passed AST with the
@@ -23,15 +23,24 @@ export function getDefaultExport(ast: any): any[];
  * like JSX.
  * @returns
  */
-export function addImportToAST(ast: any): (name: string, from: string, { named }: {
-    named: boolean;
-}) => void;
-export function getNamedExport(ast: any, name: any): any;
+export function addImportToAST(ast: any): (
+  name: string,
+  from: string,
+  {
+    named,
+  }: {
+    named: boolean
+  }
+) => void
+export function getNamedExport(ast: any, name: any): any
 /**
  * NOT A PURE FUNCTION!
  * removes the export from the passed AST
  */
-export function removeExportFromAST(ast: any): (name: string, options: {
-    named: boolean;
-}) => void;
-export function isTopLevelFunction(parents: any): any;
+export function removeExportFromAST(ast: any): (
+  name: string,
+  options: {
+    named: boolean
+  }
+) => void
+export function isTopLevelFunction(parents: any): any

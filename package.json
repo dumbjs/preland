@@ -32,7 +32,8 @@
     "build": "rollup -c",
     "next": "bumpp",
     "test": "uvu",
-    "test:ci": "c8 npm run test"
+    "test:ci": "c8 npm run test",
+    "fix": "eslint --fix .; prettier --write ."
   },
   "prettier": "@barelyhuman/prettier-config",
   "license": "MIT",
@@ -40,6 +41,7 @@
     "@barelyhuman/prettier-config": "^1.1.0",
     "bumpp": "^9.2.0",
     "c8": "^8.0.1",
+    "eslint": "^8.53.0",
     "prettier": "^3.0.3",
     "rollup": "^4.4.0",
     "rollup-node-externals": "0.0.1-2",

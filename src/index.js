@@ -1,12 +1,13 @@
 import sucrase from 'sucrase'
 import { addImportToAST, astFromCode, codeFromAST, walker } from './ast.js'
-import { dirname } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export function readSourceFile(file) {
-  const source = readFile(file, 'utf8')
+  const source = readFileSync(file, 'utf8')
   return sucrase.transform(source, {
     transforms: ['typescript', 'jsx'],
     jsxImportSource: 'preact',
@@ -65,7 +66,7 @@ export function islandNodeToTemplate(island) {
     body: [island.declaration],
   }
 
-  const addImport = addImportToAST(ast)
+  const addImport = addImportToAST(finalAST)
   addImport('h', 'preact', { named: true })
   addImport('Fragment', 'preact', { named: true })
 
@@ -184,7 +185,7 @@ export function generateClientTemplate(name) {
   const islandName = getIslandName(name)
 
   // prettier-ignore
-  const __inline_file = fs.readFileSync(join(__dirname, "./dom-restore.js"),"utf8");
+  const __inline_file = readFileSync(join(__dirname, "./dom-restore.js"),"utf8");
 
   return `
   import { render, h } from 'preact';

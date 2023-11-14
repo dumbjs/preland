@@ -7,12 +7,12 @@ import fs, { mkdir } from 'node:fs/promises'
  */
 function main() {
   const common = {
+    treeshake: true,
     plugins: [nodeExternals(), inlinePlugin(), createPackages()],
   }
   return [
     {
       ...common,
-
       input: {
         index: './src/index.js',
         ast: './src/ast.js',
@@ -43,7 +43,7 @@ function inlinePlugin() {
       if (/(__inline_(\w+)[ ]?\=)/g.test(code)) {
         // DO NOT REMOVE THESE, as they are used by `eval`
         // to execute the inline path action
-        const fs = await import('node:fs')
+        const { readFileSync } = await import('node:fs')
         const __dirname = dirname(path)
         const { join } = await import('node:path')
 
