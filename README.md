@@ -34,7 +34,7 @@ given code to look for preact islands.
 - Installation as simple as adding `@dumbjs/preland` to your dependencies.
 
   ```sh
-  $ npm i @dumbjs/preland
+  $ npm i @dumbjs/preland@beta
   ```
 
 ## API
