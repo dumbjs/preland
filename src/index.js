@@ -244,7 +244,6 @@ export function isFunctionIsland(functionAST) {
   // and would need to be explicity defined as an island since it's
   // not possible for us to assume if the passed down props are functions
   // or not
-
   if (!(functionAST.body && functionAST.body.type === 'BlockStatement')) {
     return false
   }
@@ -259,7 +258,16 @@ export function isFunctionIsland(functionAST) {
   if (!hasReturn) {
     return false
   }
-  if (!['JSXFragment', 'JSXElement'].includes(hasReturn.argument.type)) {
+
+  const hasReturnRuntimeJSXTransformed =
+    hasReturn.argument.type === 'CallExpression' &&
+    ['_jsx', '_jsxs'].includes(hasReturn.argument.callee.name)
+
+  const hasReturnJSX = ['JSXFragment', 'JSXElement'].includes(
+    hasReturn.argument.type
+  )
+
+  if (!hasReturnJSX && !hasReturnRuntimeJSXTransformed) {
     return false
   }
 
@@ -286,6 +294,18 @@ export function isFunctionIsland(functionAST) {
       if (/(use[A-Z])/.test(node.name)) {
         isIsland = true
       }
+    },
+    ReturnStatement(node) {
+      walker(node, {
+        Identifier(_node) {
+          if (_node.name && internalTriggers.includes(_node.name)) {
+            isIsland = true
+          }
+        },
+        ArrowFunctionExpression(_node) {
+          isIsland = true
+        },
+      })
     },
     JSXAttribute(node) {
       if (
