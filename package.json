@@ -33,7 +33,8 @@
     "next": "bumpp",
     "test": "uvu",
     "test:ci": "c8 npm run test",
-    "fix": "eslint --fix .; prettier --write ."
+    "fix": "eslint --fix .; prettier --write .",
+    "prepare": "npm run build"
   },
   "prettier": "@barelyhuman/prettier-config",
   "license": "MIT",
