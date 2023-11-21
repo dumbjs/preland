@@ -19,7 +19,7 @@ const restoreTree = (type, props = {}) => {
       restoreTree(props.children.type, props.children.props || {})
     )
   }
-
+  // eslint-disable-next-line no-undef
   return h(type, props)
 }
 

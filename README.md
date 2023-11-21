@@ -55,8 +55,16 @@ export function islandNodeToTemplate(island: any): {
 export function getExportedNodes(astBody: any): any
 export function generateServerTemplate(name: any): string
 export function generateClientTemplate(name: any): string
-export function isFunctionIsland(functionAST: any): boolean
+export function isFunctionIsland(
+  functionAST: any,
+  {
+    transpiledIdentifiers,
+  }?: {
+    transpiledIdentifiers?: string[]
+  }
+): boolean
 export function getIslandName(name: any): string
+export const DEFAULT_TRANSPILED_IDENTIFIERS: string[]
 ```
 
 ### `@dumbjs/preland/ast`
