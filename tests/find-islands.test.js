@@ -102,4 +102,27 @@ test('transformed runtime: automatic, inline trigger', () => {
   assert.equal(islands.length, 1)
 })
 
+test('transformed runtime: manual, pragma h, no triggers', () => {
+  const islands = findIslands(`
+// @jsx h
+import { h } from "preact";
+function comp() {
+  return h("button", null);
+}`)
+
+  assert.equal(islands.length, 0)
+})
+
+test('transformed runtime: classic, pragma:h , referenced trigger', () => {
+  const islands = findIslands(`
+    // @jsx h
+    import { h } from "preact";
+    export const Component = () => {
+      const onClick = () => {};
+      return h("button", { onClick: onClick, children: "hello" });
+    };`)
+
+  assert.equal(islands.length, 1)
+})
+
 test.run()

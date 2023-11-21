@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+export const DEFAULT_TRANSPILED_IDENTIFIERS = ['_jsx', '_jsxs']
+
 export function readSourceFile(file) {
   const source = readFileSync(file, 'utf8')
   return sucrase.transform(source, {
@@ -16,16 +18,36 @@ export function readSourceFile(file) {
 }
 
 export function findIslands(sourceCode) {
+  const JSX_PRAGMA_REGEX = /((\@jsx)|(\@pragma))\s?(\w+)/
+  const JSX_FRAGMENT_PRAGMA_REGEX = /((\@jsxFrag)|(\@pragmaFrag))\s?(\w+)/
+  const hasTopLevelJSXPragma = JSX_PRAGMA_REGEX.test(sourceCode)
+  const hasTopLevelJSXFragmentPragma =
+    JSX_FRAGMENT_PRAGMA_REGEX.test(sourceCode)
+
   const ast = astFromCode(sourceCode)
   const exportedNodes = getExportedNodes(ast.body)
 
   let islands = []
 
+  const transpiledIdentifiers = [...DEFAULT_TRANSPILED_IDENTIFIERS]
+
+  if (hasTopLevelJSXPragma) {
+    const values = JSX_PRAGMA_REGEX.exec(sourceCode)
+    transpiledIdentifiers.push(values[4])
+  }
+
+  if (hasTopLevelJSXFragmentPragma) {
+    const values = JSX_FRAGMENT_PRAGMA_REGEX.exec(sourceCode)
+    transpiledIdentifiers.push(values[4])
+  }
+
   for (let [id, nodeItem] of exportedNodes.entries()) {
     const node = nodeItem.node
     if (
       node.declaration.type === 'FunctionDeclaration' &&
-      isFunctionIsland(node.declaration)
+      isFunctionIsland(node.declaration, {
+        transpiledIdentifiers,
+      })
     ) {
       islands.push({
         id,
@@ -47,7 +69,11 @@ export function findIslands(sourceCode) {
           x.type == 'VariableDeclarator' &&
           x.init.type == 'ArrowFunctionExpression'
       )
-      if (isFunctionIsland(functionNode.init)) {
+      if (
+        isFunctionIsland(functionNode.init, {
+          transpiledIdentifiers,
+        })
+      ) {
         islands.push({
           id,
           node: nodeItem.node,
@@ -239,7 +265,10 @@ export function generateClientTemplate(name) {
   }`
 }
 
-export function isFunctionIsland(functionAST) {
+export function isFunctionIsland(
+  functionAST,
+  { transpiledIdentifiers = ['_jsx', '_jsxs'] } = {}
+) {
   // If it's not a block, then it's an immediate return
   // and would need to be explicity defined as an island since it's
   // not possible for us to assume if the passed down props are functions
@@ -261,7 +290,7 @@ export function isFunctionIsland(functionAST) {
 
   const hasReturnRuntimeJSXTransformed =
     hasReturn.argument.type === 'CallExpression' &&
-    ['_jsx', '_jsxs'].includes(hasReturn.argument.callee.name)
+    transpiledIdentifiers.includes(hasReturn.argument.callee.name)
 
   const hasReturnJSX = ['JSXFragment', 'JSXElement'].includes(
     hasReturn.argument.type
