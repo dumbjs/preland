@@ -102,6 +102,40 @@ test('transformed runtime: automatic, inline trigger', () => {
   assert.equal(islands.length, 1)
 })
 
+test('transformed runtime: automatic, referenced trigger, multi export, 1 island', () => {
+  const islands = findIslands(`
+  import {jsx as _jsx} from "preact/jsx-runtime";
+  export function Component(){
+    const onClick = () => {}
+    return _jsx('button', { onClick: onClick,} )
+  }
+
+  export function Component2(){
+    return _jsx('p', { children: "hello"})
+  }
+  `)
+
+  assert.equal(islands.length, 1)
+})
+
+test('transformed runtime: automatic, referenced trigger, all islands', () => {
+  const islands = findIslands(`
+  
+  import {jsx as _jsx} from "preact/jsx-runtime";
+  export function Component(){
+    const onClick = () => {}
+    return _jsx('button', { onClick: onClick,} )
+  }s
+
+  export function Component2(){
+    const onClick = () => {}
+    return _jsx('button', { onClick: onClick,} )
+  }
+  `)
+
+  assert.equal(islands.length, 2)
+})
+
 test('transformed runtime: manual, pragma h, no triggers', () => {
   const islands = findIslands(`
 // @jsx h
@@ -123,6 +157,42 @@ test('transformed runtime: classic, pragma:h , referenced trigger', () => {
     };`)
 
   assert.equal(islands.length, 1)
+})
+
+test('transformed runtime: classic, pragma:h , referenced trigger, multi component, 1 island', () => {
+  const islands = findIslands(`
+    // @jsx h
+    import { h } from "preact";
+    export const Component = () => {
+      const onClick = () => {};
+      return h("button", { onClick: onClick, children: "hello" });
+    };
+
+    export const Component2 = () => {
+      return h("button", { children: "hello" });
+    }
+    `)
+
+  assert.equal(islands.length, 1)
+})
+
+test('transformed runtime: classic, pragma:h , referenced trigger, multi component, all islands', () => {
+  const islands = findIslands(`
+    // @jsx h
+    import { h } from "preact";
+    import { useState } from "preact/hooks";
+    export const Component = () => {
+      const onClick = () => {};
+      return h("button", { onClick: onClick, children: "hello" });
+    };
+
+    export const Component2 = () => {
+      const [state, setState] = useState(0)
+      return h("button", { children: state });
+    }
+    `)
+
+  assert.equal(islands.length, 2)
 })
 
 test.run()
