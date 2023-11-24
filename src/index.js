@@ -265,6 +265,15 @@ export function generateClientTemplate(name) {
   }`
 }
 
+/**
+ *
+ * @param {import("acorn").Node} functionAST
+ * @param {object} options
+ * @param {string[]} options.transpiledIdentifiers , identifiers to look for when
+ * searching the function ast. These are generally `_jsx` and `_jsxs` when working with
+ * the `automatic` JSX Runtime in bundlers but might differ in your scenario
+ * @returns
+ */
 export function isFunctionIsland(
   functionAST,
   { transpiledIdentifiers = ['_jsx', '_jsxs'] } = {}
