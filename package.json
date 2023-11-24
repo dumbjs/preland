@@ -44,7 +44,7 @@
     "c8": "^8.0.1",
     "eslint": "^8.53.0",
     "prettier": "^3.0.3",
-    "rollup": "^4.4.0",
+    "rollup": "^4.5.2",
     "rollup-node-externals": "0.0.1-2",
     "rollup-plugin-node-externals": "^6.1.2",
     "uvu": "^0.5.6"
