@@ -1,5 +1,19 @@
 export function readSourceFile(file: any): any
-export function findIslands(sourceCode: any): {
+/**
+ * @param {string} sourceCode the javascript/typescript source code to look for islands in
+ * @param {object} options
+ * @param {typeof isFunctionIsland} options.isFunctionIsland a function that validates a functional node to classify it
+ * as an island or not, returns a truthy value if it finds an island in the passed AST. Defaults to the `isFunctionIsland` export from this library
+ * @returns
+ */
+export function findIslands(
+  sourceCode: string,
+  {
+    isFunctionIsland: isFunctionIslandFn,
+  }?: {
+    isFunctionIsland: typeof isFunctionIsland
+  }
+): {
   id: any
   node: any
   nodeItem: any
@@ -18,7 +32,7 @@ export function generateClientTemplate(name: any): string
  * @param {string[]} options.transpiledIdentifiers , identifiers to look for when
  * searching the function ast. These are generally `_jsx` and `_jsxs` when working with
  * the `automatic` JSX Runtime in bundlers but might differ in your scenario
- * @returns
+ * @returns {boolean}
  */
 export function isFunctionIsland(
   functionAST: import('acorn').Node,
