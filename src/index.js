@@ -99,7 +99,7 @@ export function findIslands(
 export function islandNodeToTemplate(island) {
   const finalAST = {
     type: 'Program',
-    body: [island.declaration],
+    body: [island.node.declaration],
   }
 
   const addImport = addImportToAST(finalAST)
