@@ -1,3 +1,12 @@
+import type { Program, Node, ExportNamedDeclaration } from 'acorn'
+
+type IslandNode = {
+  id: string
+  node: Node
+  nodeItem: ExportNamedDeclaration
+  ast: Program
+}
+
 export function readSourceFile(file: any): any
 /**
  * @param {string} sourceCode the javascript/typescript source code to look for islands in
@@ -13,11 +22,7 @@ export function findIslands(
   }?: {
     isFunctionIsland: typeof isFunctionIsland
   }
-): {
-  id: any
-  node: any
-  nodeItem: any
-}[]
+): IslandNode[]
 export function islandNodeToTemplate(island: any): {
   server: any
   client: string
@@ -44,3 +49,14 @@ export function isFunctionIsland(
 ): boolean
 export function getIslandName(name: any): string
 export const DEFAULT_TRANSPILED_IDENTIFIERS: string[]
+
+/**
+ * NOT-PURE
+ * Modifies the original AST to include the
+ * passed island item, replacing the original ast
+ */
+export function injectIslandAST(
+  sourceAST: Program,
+  island: IslandNode,
+  templateGenerator = typeof generateServerTemplate
+): void

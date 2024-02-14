@@ -22,7 +22,7 @@ export function readSourceFile(file) {
  * @param {object} options
  * @param {typeof isFunctionIsland} options.isFunctionIsland a function that validates a functional node to classify it
  * as an island or not, returns a truthy value if it finds an island in the passed AST. Defaults to the `isFunctionIsland` export from this library
- * @returns
+ * @returns {import(".").IslandNode[]}
  */
 export function findIslands(
   sourceCode,
@@ -88,6 +88,7 @@ export function findIslands(
           id,
           node: nodeItem.node,
           nodeItem,
+          ast,
         })
       }
     }
@@ -215,6 +216,30 @@ export function generateServerTemplate(name) {
   `
 
   return code
+}
+
+/**
+ * NOT-PURE
+ * Modifies the original AST to include the
+ * passed island item, replacing the original ast
+ * @param {import("acorn").Program} sourceAST
+ * @param {import(".").IslandNode} island
+ * @param {typeof generateServerTemplate} templateGenerator
+ */
+export function injectIslandAST(
+  sourceAST,
+  island,
+  templateGenerator = generateServerTemplate
+) {
+  const astBody = sourceAST.body
+  astBody.forEach((item, index) => {
+    if (item !== island.node) {
+      return
+    }
+    const serverTemplate = templateGenerator(island.id)
+    const islandItem = astFromCode(serverTemplate).body
+    astBody.splice(index, 1, island.node.declaration, ...islandItem)
+  })
 }
 
 export function generateClientTemplate(name) {
