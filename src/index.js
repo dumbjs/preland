@@ -63,6 +63,7 @@ export function findIslands(
         id,
         node: nodeItem.node,
         nodeItem,
+        ast,
       })
     }
 
