@@ -53,6 +53,7 @@ export function findIslands(
 
   for (let [id, nodeItem] of exportedNodes.entries()) {
     const node = nodeItem.node
+    if (!node.declaration) continue
     if (
       node.declaration.type === 'FunctionDeclaration' &&
       isFunctionIslandFn(node.declaration, {
