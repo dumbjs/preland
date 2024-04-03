@@ -2,34 +2,41 @@
   "name": "@dumbjs/preland",
   "version": "0.0.0-beta.10",
   "description": "",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./src/index.d.ts",
+  "license": "MIT",
   "type": "module",
-  "files": [
-    "dist",
-    "src"
-  ],
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/esm/index.js"
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./esm/index.d.ts"
+      },
+      "require": "./dist/index.cjs",
+      "import": "./esm/index.mjs",
+      "default": "./esm/index.mjs"
     },
     "./ast": {
-      "types": "./src/ast.d.ts",
-      "require": "./dist/cjs/ast.js",
-      "import": "./dist/esm/ast.js",
-      "default": "./dist/esm/ast.js"
+      "types": {
+        "require": "./dist/ast.d.ts",
+        "import": "./esm/ast.d.ts"
+      },
+      "require": "./dist/ast.cjs",
+      "import": "./esm/ast.mjs",
+      "default": "./esm/ast.mjs"
     },
     "./package.json": "./package.json"
   },
+  "main": "./dist/index.cjs",
+  "module": "./esm/index.mjs",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "esm",
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "run-p 'build:*'",
+    "build:cjs": "mkdist . --src='src' --dist='dist' --format=cjs -d --ext=cjs",
+    "build:esm": "mkdist . --src='src' --dist='esm' --format=esm -d --ext=mjs",
     "next": "bumpp",
     "test": "uvu",
     "test:ci": "c8 npm run test",
@@ -37,18 +44,6 @@
     "prepare": "npm run build"
   },
   "prettier": "@barelyhuman/prettier-config",
-  "license": "MIT",
-  "devDependencies": {
-    "@barelyhuman/prettier-config": "^1.1.0",
-    "bumpp": "^9.2.0",
-    "c8": "^8.0.1",
-    "eslint": "^8.53.0",
-    "prettier": "^3.0.3",
-    "rollup": "^4.5.2",
-    "rollup-node-externals": "0.0.1-2",
-    "rollup-plugin-node-externals": "^6.1.2",
-    "uvu": "^0.5.6"
-  },
   "dependencies": {
     "@barelyhuman/astring-jsx": "^2.0.1",
     "acorn": "^8.11.2",
@@ -59,5 +54,23 @@
     "acorn-static-class-features": "^1.0.0",
     "acorn-walk": "^8.3.0",
     "sucrase": "^3.34.0"
+  },
+  "devDependencies": {
+    "@barelyhuman/prettier-config": "^1.1.0",
+    "bumpp": "^9.2.0",
+    "c8": "^8.0.1",
+    "eslint": "^8.53.0",
+    "mkdist": "^1.4.0",
+    "npm-run-all2": "^6.1.2",
+    "prettier": "^3.0.3",
+    "rollup": "^4.5.2",
+    "rollup-node-externals": "0.0.1-2",
+    "rollup-plugin-node-externals": "^6.1.2",
+    "typescript": "^5.4.3",
+    "uvu": "^0.5.6"
+  },
+  "packageManager": "yarn@4.1.1",
+  "publishConfig": {
+    "access": "public"
   }
 }
