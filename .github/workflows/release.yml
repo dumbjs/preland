@@ -18,19 +18,19 @@ jobs:
         with:
           node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Test
-        run: yarn test
+        run: npm run test
 
       - name: Compile
-        run: yarn build
+        run: npm run build
 
       - name: Publish
         run: |
-          npm publish --tag beta
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

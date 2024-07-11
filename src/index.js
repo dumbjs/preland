@@ -1,5 +1,5 @@
 import sucrase from 'sucrase'
-import { addImportToAST, astFromCode, codeFromAST, walker } from './ast'
+import { addImportToAST, astFromCode, codeFromAST, walker } from './ast.js'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readFileSync } from 'node:fs'

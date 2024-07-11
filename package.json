@@ -7,41 +7,40 @@
   "exports": {
     ".": {
       "types": {
-        "require": "./dist/index.d.ts",
-        "import": "./esm/index.d.ts"
+        "require": "./dist/cjs/index.d.ts",
+        "import": "./dist/esm/index.d.ts"
       },
-      "require": "./dist/index.cjs",
-      "import": "./esm/index.mjs",
-      "default": "./esm/index.mjs"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.mjs",
+      "default": "./dist/esm/index.mjs"
     },
     "./ast": {
       "types": {
-        "require": "./dist/ast.d.ts",
-        "import": "./esm/ast.d.ts"
+        "require": "./dist/cjs/ast.d.ts",
+        "import": "./dist/esm/ast.d.ts"
       },
-      "require": "./dist/ast.cjs",
-      "import": "./esm/ast.mjs",
-      "default": "./esm/ast.mjs"
+      "require": "./dist/cjs/ast.js",
+      "import": "./dist/esm/ast.mjs",
+      "default": "./dist/esm/ast.mjs"
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.cjs",
-  "module": "./esm/index.mjs",
-  "types": "./esm/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/esm/index.d.ts",
   "files": [
     "esm",
     "dist",
     "src"
   ],
   "scripts": {
-    "build": "run-p 'build:*'",
-    "build:cjs": "mkdist . --src='src' --dist='dist' --format=cjs -d --ext=cjs",
-    "build:esm": "mkdist . --src='src' --dist='esm' --format=esm -d --ext=mjs",
+    "build": "rollup -c",
     "next": "bumpp",
     "test": "uvu",
     "test:ci": "c8 npm run test",
     "fix": "eslint --fix .; prettier --write .",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "publint": "publint"
   },
   "prettier": "@barelyhuman/prettier-config",
   "dependencies": {
@@ -60,16 +59,18 @@
     "bumpp": "^9.2.0",
     "c8": "^8.0.1",
     "eslint": "^8.53.0",
+    "esm": "^3.2.25",
     "mkdist": "^1.4.0",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.0.3",
+    "publint": "^0.2.8",
     "rollup": "^4.5.2",
     "rollup-node-externals": "0.0.1-2",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-node-externals": "^6.1.2",
     "typescript": "^5.4.3",
     "uvu": "^0.5.6"
   },
-  "packageManager": "yarn@4.1.1",
   "publishConfig": {
     "access": "public"
   }

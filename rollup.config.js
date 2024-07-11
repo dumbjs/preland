@@ -1,6 +1,7 @@
 import { dirname, join } from 'node:path'
 import { nodeExternals } from 'rollup-plugin-node-externals'
 import fs, { mkdir } from 'node:fs/promises'
+import copy from 'rollup-plugin-copy'
 
 /**
  * @return {import("rollup").RollupOptions[]}
@@ -8,7 +9,19 @@ import fs, { mkdir } from 'node:fs/promises'
 function main() {
   const common = {
     treeshake: true,
-    plugins: [nodeExternals(), inlinePlugin(), createPackages()],
+    plugins: [
+      nodeExternals(),
+      inlinePlugin(),
+      createPackages(),
+      copy({
+        targets: [
+          {
+            src: './src/*.d.ts',
+            dest: ['./dist/cjs/', './dist/esm/'],
+          },
+        ],
+      }),
+    ],
   }
   return [
     {
@@ -18,6 +31,7 @@ function main() {
         ast: './src/ast.js',
       },
       output: {
+        entryFileNames: '[name].mjs',
         dir: './dist/esm',
         format: 'esm',
       },
