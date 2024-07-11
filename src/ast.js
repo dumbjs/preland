@@ -20,6 +20,7 @@ const jsxParser = Parser.extend(
 function astFromCode(code) {
   const ast = jsxParser.parse(code, {
     sourceType: 'module',
+    allowAwaitOutsideFunction: true,
     ecmaVersion: '2020',
   })
   return ast
