@@ -18,7 +18,7 @@ Framework Agnostic utils to generate atomic islands for preact components
 
 `preland` is a set of utilities that allow you to `read`, `find` , `transform`
 and `generate` island components for preact. None of the utlities in this set
-has any dependency on any bundler or framework and just statically analyses the
+have any dependency on any bundler or framework and just statically analyse the
 given code to look for preact islands.
 
 ## Highlights
