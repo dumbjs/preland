@@ -195,4 +195,19 @@ test('transformed runtime: classic, pragma:h , referenced trigger, multi compone
   assert.equal(islands.length, 2)
 })
 
+test('nested islands', () => {
+  const islands = findIslands(
+    `
+      export const Component = ({onClick})=>{
+        return <button onClick={onClick}></button>
+      }
+      export const Component2 = () => {
+        return <Component onClick={()=>{}}/>
+      }
+    `
+  )
+
+  assert.equal(islands.length, 1)
+})
+
 test.run()
