@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export const DEFAULT_TRANSPILED_IDENTIFIERS = ['_jsx', '_jsxs']
+export const IMPORT_PATH_PLACEHOLDER = "<~~{importPath}~~>"
 
 export function readSourceFile(file) {
   const source = readFileSync(file, 'utf8')
@@ -209,7 +210,7 @@ export function generateServerTemplate(name) {
             "data-props":JSON.stringify(props)
           },
           h(${name},props),
-          h("script",{src:"<~{${name}}~>",type:"module",defer:true})
+          h("script",{src:"${getServerTemplatePlaceholder(name)}",type:"module",defer:true})
         )
       )
     }
@@ -267,7 +268,7 @@ export function generateClientTemplate(name) {
       }
     
       async connectedCallback() {
-          const c = await import("<~~{importPath}~~>");
+          const c = await import("${IMPORT_PATH_PLACEHOLDER}");
           const usableComponent = c["${name}"]
           const props = JSON.parse(this.dataset.props  || '{}');
           this.baseProps = props
@@ -400,4 +401,8 @@ export function isFunctionIsland(
 
 export function getIslandName(name) {
   return `island${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`
+}
+
+export function getServerTemplatePlaceholder(name) {
+  return `<~{${name}}~>`
 }
