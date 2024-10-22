@@ -47,8 +47,10 @@ export function isFunctionIsland(
     transpiledIdentifiers: string[]
   }
 ): boolean
-export function getIslandName(name: any): string
+export function getIslandName(name: string): string
+export function getServerTemplatePlaceholder(name: string): string
 export const DEFAULT_TRANSPILED_IDENTIFIERS: string[]
+export const IMPORT_PATH_PLACEHOLDER: string
 
 /**
  * NOT-PURE
@@ -58,5 +60,5 @@ export const DEFAULT_TRANSPILED_IDENTIFIERS: string[]
 export function injectIslandAST(
   sourceAST: Program,
   island: IslandNode,
-  templateGenerator = typeof generateServerTemplate
+  templateGenerator: typeof generateServerTemplate
 ): void
