@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export const DEFAULT_TRANSPILED_IDENTIFIERS = ['_jsx', '_jsxs']
-export const IMPORT_PATH_PLACEHOLDER = "<~~{importPath}~~>"
+export const IMPORT_PATH_PLACEHOLDER = '<~~{importPath}~~>'
 
 export function readSourceFile(file) {
   const source = readFileSync(file, 'utf8')
@@ -15,6 +15,7 @@ export function readSourceFile(file) {
     transforms: ['typescript', 'jsx'],
     jsxImportSource: 'preact',
     jsxRuntime: 'automatic',
+    production: true,
   }).code
 }
 
@@ -273,7 +274,7 @@ export function generateClientTemplate(name) {
           const props = JSON.parse(this.dataset.props  || '{}');
           this.baseProps = props
           this.component = usableComponent
-          this.renderOnView({threshold:0.2})              
+          this.renderOnView({threshold: 0.2})              
       }
     
       renderOnView({threshold} = {}){
