@@ -5,16 +5,20 @@ on:
     tags-ignore:
       - '*-beta.*'
 
+permissions:
+  id-token: write 
+  contents: read
+
 jobs:
   publish_beta:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
       - name: Enable Corepack
         run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
@@ -30,7 +34,4 @@ jobs:
         run: npm run build
 
       - name: Publish
-        run: |
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
