@@ -4,6 +4,9 @@
   "description": "",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "url": "https://github.com/dumbjs/preland"
+  },
   "exports": {
     ".": {
       "types": {
